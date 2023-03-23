@@ -82,6 +82,9 @@ def train_model(model,
 
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
+    if cfg.compile:
+        print('==torch compile begin=====')
+        model = torch.compile (model)   # 关键一行
     # use apex fp16 optimizer
     # Noticed that this is just a temporary patch. We shoud not encourage this kind of code style
     use_amp = False

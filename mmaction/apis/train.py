@@ -1,8 +1,10 @@
 import copy as cp
 import os.path as osp
+import time
 
 import torch
 from mmcv.parallel import MMDataParallel, MMDistributedDataParallel
+# /usr/local/lib/python3.7/dist-packages/mmcv/runner/epoch_based_runner.py
 from mmcv.runner import (DistSamplerSeedHook, EpochBasedRunner, OptimizerHook,
                          build_optimizer, get_dist_info)
 from mmcv.runner.hooks import Fp16OptimizerHook
@@ -79,7 +81,7 @@ def train_model(model,
         data_loaders = [
             build_dataloader(ds, **dataloader_setting) for ds in dataset
         ]
-
+    
     # build runner
     optimizer = build_optimizer(model, cfg.optimizer)
     if cfg.compile:
@@ -195,7 +197,15 @@ def train_model(model,
     runner_kwargs = dict()
     if cfg.omnisource:
         runner_kwargs = dict(train_ratio=train_ratio)
+    
+    # add ips
+    t1 = time.time()
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs, **runner_kwargs)
+    epoch_time = time.time() - t1
+    instance_num = len(dataset[0])
+    print(instance_num)
+    ips = instance_num * cfg.total_epochs / epoch_time
+    print('ips: {ips:.5f} instance/sec. '.format(ips=ips))
 
     if test['test_last'] or test['test_best']:
         best_ckpt_path = None

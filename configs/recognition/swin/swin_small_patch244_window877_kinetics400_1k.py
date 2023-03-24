@@ -103,7 +103,7 @@ lr_config = dict(
     warmup_by_epoch=True,
     warmup_iters=2 #2.5, for mmcv>=1.4.0, not supported float, but int
 )
-total_epochs = 30
+total_epochs = 2 #30
 
 # runtime settings
 checkpoint_config = dict(interval=1)
@@ -119,7 +119,7 @@ optimizer_config = dict(
     grad_clip=None,
     coalesce=True,
     bucket_size_mb=-1,
-    use_fp16=True,
+    use_fp16=False,
 )
 
 compile = False

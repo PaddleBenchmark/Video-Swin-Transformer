@@ -14,9 +14,10 @@ echo "PWD = $PWD"
 pip install -U openmim
 mim install mmcv-full==1.7.1
 
-pip install decord==0.4.2 -i https://pypi.tuna.tsinghua.edu.cn/simple
-pip install av==8.0.3 -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install decord==0.4.2
+pip install av==8.0.3
 pip install timm
+pip install scipy
 
 # 安装mmaction2
 pip install -v -e .
@@ -27,9 +28,8 @@ cd apex
 pip install -v --disable-pip-version-check --no-cache-dir --global-option="--cpp_ext" --global-option="--cuda_ext" ./
 cd ..
 
-
-# 改一下预训练模型 
-wget https://videotag.bj.bcebos.com/Data/swin_small_patch244_window877_kinetics400_1k.pth
+# 下载预训练模型
+wget https://videotag.bj.bcebos.com/Data/swin_small_patch4_window7_224_22k.pth
 
 ################################# 准备训练数据:
 mkdir data

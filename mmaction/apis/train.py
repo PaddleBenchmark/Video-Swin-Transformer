@@ -202,9 +202,10 @@ def train_model(model,
     t1 = time.time()
     runner.run(data_loaders, cfg.workflow, cfg.total_epochs, **runner_kwargs)
     epoch_time = time.time() - t1
-    instance_num = len(dataset[0])
-    print(instance_num)
+    # 返回单卡时长，分析脚本中会自动乘以卡数
+    instance_num = len(dataset[0]) / len(cfg.gpu_ids)
     ips = instance_num * cfg.total_epochs / epoch_time
+    # if torch.cuda.current_device() == 0:
     print('ips: {ips:.5f} instance/sec. '.format(ips=ips))
 
     if test['test_last'] or test['test_best']:

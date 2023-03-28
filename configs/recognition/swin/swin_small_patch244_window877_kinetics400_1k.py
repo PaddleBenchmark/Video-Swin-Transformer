@@ -5,11 +5,12 @@ model=dict(backbone=dict(patch_size=(2,4,4), drop_path_rate=0.1), test_cfg=dict(
 
 # dataset settings
 dataset_type = 'VideoDataset'
-data_root = 'data/kinetics400/train'
-data_root_val = 'data/kinetics400/val'
-ann_file_train = 'data/kinetics400/kinetics400_train_list.txt'
-ann_file_val = 'data/kinetics400/kinetics400_val_list.txt'
-ann_file_test = 'data/kinetics400/kinetics400_val_list.txt'
+data_root = 'data/videos'
+data_root_val = 'data/videos'
+ann_file_train = 'data/videos/train_small_videos.list'
+ann_file_val = 'data/videos/val_small_videos.list'
+ann_file_test = 'data/videos/val_small_videos.list'
+
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_bgr=False)
 train_pipeline = [
@@ -100,9 +101,9 @@ lr_config = dict(
     min_lr=0,
     warmup='linear',
     warmup_by_epoch=True,
-    warmup_iters=2.5
+    warmup_iters=2 #2.5, for mmcv>=1.4.0, not supported float, but int
 )
-total_epochs = 30
+total_epochs = 2 #30
 
 # runtime settings
 checkpoint_config = dict(interval=1)
@@ -118,5 +119,7 @@ optimizer_config = dict(
     grad_clip=None,
     coalesce=True,
     bucket_size_mb=-1,
-    use_fp16=True,
+    use_fp16=False,
 )
+
+compile = False
